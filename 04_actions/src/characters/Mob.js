@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import Explosion from '../effects/Explosion';
 
 export default class Player extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, texture, animKey, initHp, dropRate) {
@@ -55,6 +56,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
       this.flipX = true;
     } else {
       this.flipX = false;
+    }
+    if (this.m_hp <= 0) {
+      this.die();
     }
   }
 
@@ -117,5 +121,13 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
       },
       loop: false,
     });
+  }
+
+  die() {
+    new Explosion(this.scene, this.x, this.y);
+    this.scene.m_explosionSound.play();
+
+    this.scene.time.removeEvent(this.m_events);
+    this.destroy();
   }
 }
