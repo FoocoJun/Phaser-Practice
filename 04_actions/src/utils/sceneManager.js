@@ -5,10 +5,11 @@ export function loseGame(playingScene) {
   playingScene.scene.start('gameOverScene');
 }
 
-// export function restartGame(currentScene) {
-//   currentScene.scene.start('playGame');
-// }
+export function restartGame(GameOverScene) {
+  GameOverScene.scene.start('playGame');
+}
 
 export default {
   loseGame,
+  restartGame,
 };

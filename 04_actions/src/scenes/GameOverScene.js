@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import Config from '../Config';
+import { gameOver } from '../utils/restartManager';
 
 export default class GameOverScene extends Phaser.Scene {
   constructor() {
@@ -7,6 +8,7 @@ export default class GameOverScene extends Phaser.Scene {
   }
 
   create() {
+    gameOver(this);
     // 배경 색을 칠해줍니다.
     const bg = this.add.graphics();
     bg.fillStyle(0x5c6bc0);
@@ -23,6 +25,16 @@ export default class GameOverScene extends Phaser.Scene {
         'pixelFont',
         'Game Over',
         80
+      )
+      .setOrigin(0.5);
+
+    this.add
+      .bitmapText(
+        Config.width / 2,
+        Config.height / 1.7,
+        'pixelFont',
+        'Press "Enter" to restart',
+        40
       )
       .setOrigin(0.5);
   }
