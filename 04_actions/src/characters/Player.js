@@ -3,6 +3,13 @@ import Config from '../Config';
 import HpBar from '../ui/HpBar';
 import sceneManager from '../utils/sceneManager';
 import { pause } from '../utils/pauseManager';
+import {
+  addAttackEvent,
+  setAttackDamage,
+  setAttackScale,
+} from '../utils/attackManager';
+
+let PLAYER_SPEED = 5;
 
 export default class Player extends Phaser.Physics.Arcade.Sprite {
   constructor(scene) {
@@ -25,6 +32,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     this.setBodySize(28, 32);
 
     this.m_moving = false;
+    this.m_speed = PLAYER_SPEED;
 
     // 플레이어가 공격받을 수 있는지 여부를 나타내는 멤버 변수입니다.
     // 공격받은 후 쿨타임을 주기 위해 사용합니다.
@@ -38,7 +46,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   move(vector) {
-    let PLAYER_SPEED = 5;
     this.x += vector[0] * PLAYER_SPEED;
     this.y += vector[1] * PLAYER_SPEED;
 
@@ -111,6 +118,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
   afterLevelUp() {
     this.levelUp();
     this.scene.handleChangeGameDifficultyByLevel(this.m_level);
+    this.upgradePlayerAttack();
   }
 
   levelUp() {
@@ -132,5 +140,31 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
   increasePlayerMaxExp(amount = 20) {
     this.m_maxExp += amount;
     this.scene.m_expBar.syncPlayerMaxExp(this.m_maxExp);
+  }
+
+  upgradePlayerAttack() {
+    switch (this.m_level) {
+      case 2:
+        // claw 공격 크기 확대
+        setAttackScale(this.scene, 'claw', 4);
+        break;
+      case 3:
+        // catnip 공격 추가
+        addAttackEvent(this.scene, 'catnip', 10, 2);
+        break;
+      case 4:
+        // catnip 공격 크기 확대
+        setAttackScale(this.scene, 'catnip', 3);
+        break;
+      case 5:
+        // beam 공격 추가
+        addAttackEvent(this.scene, 'beam', 10, 1, 1000);
+        break;
+      case 6:
+        // beam 공격 크기 및 데미지 확대
+        setAttackScale(this.scene, 'beam', 2);
+        setAttackDamage(this.scene, 'beam', 40);
+        break;
+    }
   }
 }

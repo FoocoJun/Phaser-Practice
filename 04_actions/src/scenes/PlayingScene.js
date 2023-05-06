@@ -52,7 +52,7 @@ export default class PlayingScene extends Phaser.Scene {
     this.m_weaponStatic = this.add.group();
     this.m_attackEvents = {};
     // scene, attackType, attackDamage, attackScale, repeatGap
-    addAttackEvent(this, 'beam', 10, 1, 1000);
+    addAttackEvent(this, 'claw', 10, 2.3, 1500);
 
     // collisions
     // Player와 mob이 부딪혔을 경우 player에 데미지 10을 줍니다.
@@ -173,6 +173,10 @@ export default class PlayingScene extends Phaser.Scene {
     }
 
     m_player.move(vector);
+    // static 공격들은 player가 이동하면 그대로 따라오도록 해줍니다.
+    this.m_weaponStatic.children.each((weapon) => {
+      weapon.move(vector, m_player.m_speed);
+    }, this);
   }
 
   handleChangeGameDifficultyByLevel(level) {
