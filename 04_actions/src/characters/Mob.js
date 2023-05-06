@@ -12,6 +12,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.m_speed = 50;
     this.m_hp = initHp;
+    this.m_damage = 10;
     this.m_dropRate = dropRate;
 
     if (texture === 'mob1') {
