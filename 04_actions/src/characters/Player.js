@@ -99,11 +99,10 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
   getExp(expUp) {
     this.m_exp += expUp.m_exp;
-    this.scene.m_expBar.syncPlayerExp(this.m_exp);
-
     if (this.m_exp >= this.m_maxExp) {
       this.levelUp();
     }
+    this.scene.m_expBar.syncPlayerExp(this.m_exp);
   }
 
   levelUp(initialExp = 0) {
@@ -112,7 +111,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.m_exp = initialExp;
     this.m_maxExp += 20;
-    this.scene.m_expBar.syncPlayerExp(this.m_exp);
     this.scene.m_expBar.syncPlayerMaxExp(this.m_maxExp);
   }
 }
