@@ -1,8 +1,10 @@
 import Phaser from 'phaser';
 import Player from '../characters/Player';
+import Mob from '../characters/Mob';
 import { setBackground } from '../utils/backgroundManager';
 import Config from '../Config';
 import { addMobEvent } from '../utils/mobManager';
+import { addAttackEvent } from '../utils/attackManager';
 
 export default class PlayingScene extends Phaser.Scene {
   constructor() {
@@ -37,10 +39,17 @@ export default class PlayingScene extends Phaser.Scene {
     this.m_cursorKeys = this.input.keyboard.createCursorKeys();
 
     this.m_mobs = this.physics.add.group();
+    this.m_mobs.add(new Mob(this, 0, 0, 'mob1', 'mob1_anim', 10));
     this.m_mobEvents = [];
 
     // scene, repeatGap, mobTexture, mobAnim, mobHp, mobDropRate
     addMobEvent(this, 1000, 'mob1', 'mob1_anim', 10, 0.9);
+
+    this.m_weaponDynamic = this.add.group();
+    this.m_weaponStatic = this.add.group();
+    this.m_attackEvents = {};
+    // scene, attackType, attackDamage, attackScale, repeatGap
+    addAttackEvent(this, 'beam', 10, 1, 1000);
   }
 
   update() {
@@ -51,6 +60,12 @@ export default class PlayingScene extends Phaser.Scene {
 
     this.m_background.tilePositionX = this.m_player.x - Config.width / 2;
     this.m_background.tilePositionY = this.m_player.y - Config.width / 2;
+
+    const closest = this.physics.closest(
+      this.m_player,
+      this.m_mobs.getChildren()
+    );
+    this.m_closest = closest;
   }
 
   movePlayerManager(m_player) {
