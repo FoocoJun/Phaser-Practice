@@ -7,6 +7,7 @@ import { addMobEvent } from '../utils/mobManager';
 import { addAttackEvent } from '../utils/attackManager';
 import TopBar from '../ui/TopBar';
 import ExpBar from '../ui/ExpBar';
+import { pause } from '../utils/pauseManager';
 
 export default class PlayingScene extends Phaser.Scene {
   constructor() {
@@ -106,6 +107,16 @@ export default class PlayingScene extends Phaser.Scene {
       this,
       this.m_player.m_exp,
       this.m_player.m_maxExp
+    );
+
+    // event handler
+    // ESC 키를 누르면 "pause" 유형으로 일시정지 시킵니다.
+    this.input.keyboard.on(
+      'keydown-ESC',
+      () => {
+        pause(this, 'pause');
+      },
+      this
     );
   }
 

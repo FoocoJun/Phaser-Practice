@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import Config from '../Config';
 import HpBar from '../ui/HpBar';
 import sceneManager from '../utils/sceneManager';
+import { pause } from '../utils/pauseManager';
 
 export default class Player extends Phaser.Physics.Arcade.Sprite {
   constructor(scene) {
@@ -57,11 +58,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
     // 소리를 재생합니다.
     this.scene.m_expUpSound.play();
-    this.getExp(expUp);
 
-    // 일단 콘솔로 상승한 경험치를 출력합니다.
-    console.log(`경험치 ${expUp.m_exp} 상승!`);
-    console.log(`현재 경험치 ${this.m_exp}`);
+    // 경험치를 획득합니다.
+    this.getExp(expUp);
   }
 
   // 몹과 접촉했을 경우 실행되는 함수입니다.
@@ -99,18 +98,38 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
   getExp(expUp) {
     this.m_exp += expUp.m_exp;
+    this.scene.m_expBar.syncPlayerExp(this.m_exp);
     if (this.m_exp >= this.m_maxExp) {
-      this.levelUp();
+      this.pauseByLevelUp();
     }
+  }
+
+  pauseByLevelUp() {
+    pause(this.scene, 'levelup');
+  }
+
+  afterLevelUp() {
+    this.levelUp();
+  }
+
+  levelUp() {
+    this.handlePlayerLevelUp();
+    this.resetPlayerExp();
+    this.increasePlayerMaxExp();
+  }
+
+  handlePlayerLevelUp(amount = 1) {
+    this.m_level += amount;
+    this.scene.m_topBar.syncPlayerLevel(this.m_level);
+  }
+
+  resetPlayerExp(resetExp = 0) {
+    this.m_exp = resetExp;
     this.scene.m_expBar.syncPlayerExp(this.m_exp);
   }
 
-  levelUp(initialExp = 0) {
-    this.m_level += 1;
-    this.scene.m_topBar.syncPlayerLevel(this.m_level);
-
-    this.m_exp = initialExp;
-    this.m_maxExp += 20;
+  increasePlayerMaxExp(amount = 20) {
+    this.m_maxExp += amount;
     this.scene.m_expBar.syncPlayerMaxExp(this.m_maxExp);
   }
 }
