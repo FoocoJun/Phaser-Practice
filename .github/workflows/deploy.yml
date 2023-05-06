@@ -10,11 +10,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      working-directory: ./04_actions
 
     steps:
       - uses: actions/checkout@v2
-      - run: cd 04_actions
-      - run: ls
       - name: Use Nodejs
         uses: actions/setup-node@v2
         with:
@@ -24,9 +24,11 @@ jobs:
         with:
           envkey_DEBUG: false
       - run: npm ci
+        working-directory: ${{ env.working-directory }}
       - run: npm run build
+        working-directory: ${{ env.working-directory }}
       - name: deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-          publish_dir: ./dist
+          publish_dir: ./04_actions/dist
