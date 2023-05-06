@@ -32,6 +32,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     this.m_hpBar = new HpBar(scene, this, 100);
 
     this.m_exp = 0;
+    this.m_maxExp = 50;
+    this.m_level = 1;
   }
 
   move(vector) {
@@ -55,7 +57,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
     // 소리를 재생합니다.
     this.scene.m_expUpSound.play();
-    this.m_exp += expUp.m_exp;
+    this.getExp(expUp);
+
     // 일단 콘솔로 상승한 경험치를 출력합니다.
     console.log(`경험치 ${expUp.m_exp} 상승!`);
     console.log(`현재 경험치 ${this.m_exp}`);
@@ -92,5 +95,24 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
       callbackScope: this,
       loop: false,
     });
+  }
+
+  getExp(expUp) {
+    this.m_exp += expUp.m_exp;
+    this.scene.m_expBar.syncPlayerExp(this.m_exp);
+
+    if (this.m_exp >= this.m_maxExp) {
+      this.levelUp();
+    }
+  }
+
+  levelUp(initialExp = 0) {
+    this.m_level += 1;
+    this.scene.m_topBar.syncPlayerLevel(this.m_level);
+
+    this.m_exp = initialExp;
+    this.m_maxExp += 20;
+    this.scene.m_expBar.syncPlayerExp(this.m_exp);
+    this.scene.m_expBar.syncPlayerMaxExp(this.m_maxExp);
   }
 }

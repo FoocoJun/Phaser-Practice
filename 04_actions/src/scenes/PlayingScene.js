@@ -5,6 +5,8 @@ import { setBackground } from '../utils/backgroundManager';
 import Config from '../Config';
 import { addMobEvent } from '../utils/mobManager';
 import { addAttackEvent } from '../utils/attackManager';
+import TopBar from '../ui/TopBar';
+import ExpBar from '../ui/ExpBar';
 
 export default class PlayingScene extends Phaser.Scene {
   constructor() {
@@ -96,6 +98,14 @@ export default class PlayingScene extends Phaser.Scene {
       },
       null,
       this
+    );
+
+    // topBar, expBar를 PlayingScene에 추가해줍니다.
+    this.m_topBar = new TopBar(this, this.m_player.m_level);
+    this.m_expBar = new ExpBar(
+      this,
+      this.m_player.m_exp,
+      this.m_player.m_maxExp
     );
   }
 
