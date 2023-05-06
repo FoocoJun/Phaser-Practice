@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import Config from '../Config';
 import HpBar from '../ui/HpBar';
+import sceneManager from '../utils/sceneManager';
 
 export default class Player extends Phaser.Physics.Arcade.Sprite {
   constructor(scene) {
@@ -56,7 +57,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     this.m_hpBar.decrease(damage);
 
     if (this.m_hpBar.m_currentHp <= 0) {
-      console.log('GAME OVER');
+      sceneManager.loseGame(this.scene);
     }
   }
 
