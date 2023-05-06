@@ -30,6 +30,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     this.m_canBeAttacked = true;
 
     this.m_hpBar = new HpBar(scene, this, 100);
+
+    this.m_exp = 0;
   }
 
   move(vector) {
@@ -42,6 +44,21 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     } else if (vector[0] === 1) {
       this.flipX = true;
     }
+  }
+
+  // player와 expUp이 접촉했을 때 실행되는 메소드입니다.
+  pickExpUp(expUp) {
+    // expUp을 비활성화하고 화면에 보이지 않게 합니다.
+    expUp.disableBody(true, true);
+    // expUp을 제거합니다.
+    expUp.destroy();
+
+    // 소리를 재생합니다.
+    this.scene.m_expUpSound.play();
+    this.m_exp += expUp.m_exp;
+    // 일단 콘솔로 상승한 경험치를 출력합니다.
+    console.log(`경험치 ${expUp.m_exp} 상승!`);
+    console.log(`현재 경험치 ${this.m_exp}`);
   }
 
   // 몹과 접촉했을 경우 실행되는 함수입니다.

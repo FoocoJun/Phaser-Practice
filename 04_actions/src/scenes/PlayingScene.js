@@ -85,6 +85,18 @@ export default class PlayingScene extends Phaser.Scene {
       null,
       this
     );
+
+    // item
+    this.m_expUps = this.physics.add.group();
+    this.physics.add.overlap(
+      this.m_player,
+      this.m_expUps,
+      (player, expUp) => {
+        player.pickExpUp(expUp);
+      },
+      null,
+      this
+    );
   }
 
   update() {
