@@ -12,3 +12,7 @@ node_modules/
 # Build
 dist/
 /npm-debug.log
+
+# Key
+gh-pages
+gh-pages.pub
