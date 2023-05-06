@@ -110,6 +110,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
   afterLevelUp() {
     this.levelUp();
+    this.scene.handleChangeGameDifficultyByLevel(this.m_level);
   }
 
   levelUp() {
