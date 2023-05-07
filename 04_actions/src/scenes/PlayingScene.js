@@ -3,7 +3,7 @@ import Player from '../characters/Player';
 import Mob from '../characters/Mob';
 import { setBackground } from '../utils/backgroundManager';
 import Config from '../Config';
-import { addMobEvent, removeOldestMobEvent } from '../utils/mobManager';
+import { addMob, addMobEvent, removeOldestMobEvent } from '../utils/mobManager';
 import { addAttackEvent } from '../utils/attackManager';
 import TopBar from '../ui/TopBar';
 import ExpBar from '../ui/ExpBar';
