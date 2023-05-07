@@ -8,6 +8,7 @@ import { addAttackEvent } from '../utils/attackManager';
 import TopBar from '../ui/TopBar';
 import ExpBar from '../ui/ExpBar';
 import { pause } from '../utils/pauseManager';
+import { createTime } from '../utils/time';
 
 export default class PlayingScene extends Phaser.Scene {
   constructor() {
@@ -118,6 +119,9 @@ export default class PlayingScene extends Phaser.Scene {
       },
       this
     );
+
+    // time
+    createTime(this);
   }
 
   update() {
