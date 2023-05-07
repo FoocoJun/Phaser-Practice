@@ -192,6 +192,7 @@ export default class PlayingScene extends Phaser.Scene {
       case 3:
         removeOldestMobEvent(this);
         addMobEvent(this, 1000, 'mob3', 'mob3_anim', 30, 0.7);
+        setBackground(this, 'background3');
         break;
       case 4:
         removeOldestMobEvent(this);
@@ -200,6 +201,7 @@ export default class PlayingScene extends Phaser.Scene {
       case 7:
         // 보스몹은 레벨 7에 등장시킵니다.
         addMob(this, 'lion', 'lion_anim', 200, 0);
+        setBackground(this, 'background2');
         break;
     }
   }
