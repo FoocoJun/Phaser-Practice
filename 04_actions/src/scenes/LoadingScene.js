@@ -115,7 +115,7 @@ export default class LoadingScene extends Phaser.Scene {
     setTimeout(() => {
       this.add.text(20, 60, 'Loading Completed...');
       setTimeout(() => {
-        this.scene.start('playGame');
+        this.scene.start('mainScene');
       }, 200);
     }, 200);
 
